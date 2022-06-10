@@ -19,6 +19,23 @@ const Search = ({ searchValue, setSearchValue }) => {
         className={styles.input}
         placeholder="поиск пиццы"
       />
+      {searchValue && (
+        <svg
+          onClick={() => setSearchValue("")}
+          className={styles.clearIcon}
+          baseProfile="tiny"
+          height="32px"
+          version="1.1"
+          viewBox="0 0 32 32"
+          width="32px"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="Guides__x26__Forms" />
+          <g id="Icons">
+            <polygon points="21.657,8.929 16,14.586 10.343,8.929 8.929,10.343 14.586,16 8.929,21.657 10.343,23.071 16,17.414 21.657,23.071    23.071,21.657 17.414,16 23.071,10.343  " />
+          </g>
+        </svg>
+      )}
     </div>
   );
 };
