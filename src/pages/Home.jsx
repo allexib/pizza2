@@ -5,8 +5,10 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
+import { SearchContext } from "../App";
 
-const Home = ({ searchValue }) => {
+const Home = () => {
+  const { searchValue } = React.useContext(SearchContext);
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
@@ -22,7 +24,7 @@ const Home = ({ searchValue }) => {
 
     const sortBy = sortType.sortProperty.replace("-", "");
     const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
-    const category = categoryId > 0 ? `category=${categoryId}` : "";
+    const category = categoryId > 0 ? `&category=${categoryId}` : "";
     const search = searchValue ? `&search=${searchValue}` : "";
 
     fetch(
