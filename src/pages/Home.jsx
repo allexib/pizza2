@@ -1,6 +1,8 @@
 import React from "react";
+import qs from "qs";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import {useNavigate} from 'react-router-dom'
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
@@ -11,8 +13,11 @@ import { SearchContext } from "../App";
 import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice";
 
 const Home = () => {
+  const navigate=useNavigate()
   const dispatch = useDispatch();
-  const { categoryId, sort,currentPage } = useSelector((state) => state.filter);
+  const { categoryId, sort, currentPage } = useSelector(
+    (state) => state.filter
+  );
 
   const { searchValue } = React.useContext(SearchContext);
   const [items, setItems] = React.useState([]);
@@ -22,9 +27,16 @@ const Home = () => {
     dispatch(setCategoryId(id));
   };
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page) => {
+    dispatch(setCurrentPage(page));
   };
+
+  React.useEffect(()=>{
+    if(window.location.search){
+      const params=qs.parse(window.location.search.substring(1))
+
+    }
+  })
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -41,11 +53,21 @@ const Home = () => {
       .then((res) => {
         setItems(res.data);
         setIsLoading(false);
-        console.log(res);
+        // console.log(res);
       });
 
     window.scrollTo(0, 0);
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+
+  React.useEffect(() => {
+    const queryString = qs.stringify({
+      sortProperty: sort.sortPropery,
+      categoryId,
+      currentPage,
+    });
+    navigate(`?${queryString}`)
+    // console.log(queryString)
+  }, [categoryId, sort.sortProperty,  currentPage]);
 
   const pizzas = items
     // .filter((obj) => {
