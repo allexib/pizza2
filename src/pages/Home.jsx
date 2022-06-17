@@ -11,11 +11,12 @@ import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
 import { SearchContext } from "../App";
 import {
+  selectFilter,
   setCategoryId,
   setCurrentPage,
-  setFilters,
+  setFilters
 } from "../redux/slices/filterSlice";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -23,14 +24,11 @@ const Home = () => {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
-  const { items, status } = useSelector((state) => state.pizza);
+  const { items, status } = useSelector(selectPizzaData);
 
-  const { categoryId, sort, currentPage } = useSelector(
-    (state) => state.filter
-  );
+  const { categoryId, sort, currentPage,searchValue } = useSelector(selectFilter);
 
-  const { searchValue } = React.useContext(SearchContext);
-  // const [items, setItems] = React.useState([]);
+
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -138,7 +136,7 @@ const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === "error" ? (
-        <div className='content__error-info'>
+        <div className="content__error-info">
           <h2>Произошла ошибка </h2>
           <p>Не удалась получить пиццы(( Попробуйте снова позже)</p>
         </div>
