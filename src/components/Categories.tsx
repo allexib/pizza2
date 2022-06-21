@@ -1,9 +1,11 @@
 import React from "react";
 
-function Categories({ value, onChangeCategory }) {
-  // console.log(value);
-  // const [activeIndex, setActiveIndex] = React.useState(0);
+type CategoriesProps = {
+  value: number;
+  onChangeCategory: any;
+};
 
+const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
   const categories = [
     "Все",
     "Мясные",
@@ -33,6 +35,6 @@ function Categories({ value, onChangeCategory }) {
       </ul>
     </div>
   );
-}
+};
 
 export default Categories;
