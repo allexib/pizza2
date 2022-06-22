@@ -1,7 +1,7 @@
 import React from "react";
 import qs from "qs";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import Categories from "../components/Categories";
@@ -14,13 +14,16 @@ import {
   selectFilter,
   setCategoryId,
   setCurrentPage,
-  setFilters,
+  setFilters
 } from "../redux/slices/filterSlice";
-import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
+import { fetchPizzas, SearchPizzaParams, selectPizzaData } from "../redux/slices/pizzaSlice";
+import { useAppDispatch } from "../redux/store";
+import { types } from "sass";
+import String = types.String;
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
@@ -57,59 +60,75 @@ const Home: React.FC = () => {
     //   });
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         sortBy,
         order,
         category,
         search,
-        currentPage,
+        currentPage: String(currentPage),
       })
     );
     window.scrollTo(0, 0);
   };
 
   //если изменили параметры и был первый рендер
-  React.useEffect(() => {
-    if (isMounted.current) {
-      const queryString = qs.stringify({
-        sortProperty: sort.sortProperty,
-        categoryId,
-        currentPage,
-      });
-
-      navigate(`?${queryString}`);
-    }
-    isMounted.current = true;
-  }, [categoryId, sort.sortProperty, currentPage]);
-
+  // React.useEffect(() => {
+  //   if (isMounted.current) {
+  //     const queryString = qs.stringify({
+  //       sortProperty: sort.sortProperty,
+  //       categoryId,
+  //       currentPage,
+  //     });
+  //
+  //     navigate(`?${queryString}`);
+  //   }
+  //   isMounted.current = true;
+  // }, [categoryId, sort.sortProperty, currentPage]);
+  //
   React.useEffect(() => {
     getPizzas();
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   //если был первый рендер то проверяем урл параметры и сохр в редакс
   // pars params
-  React.useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
-      //list=sortList
-      dispatch(
-        setFilters({
-          ...params,
-          sort,
-        })
-      );
-      isSearch.current = true;
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = (qs.parse(window.location.search.substring(1)) as unknown) as SearchPizzaParams
+  //     const sort = list.find((obj) => obj.sortProperty === params.sortBy);
+  //     //list=sortList
+  //     dispatch(
+  //       setFilters({
+  //         ...params,
+  //         sortBy,
+  //       })
+  //     );
+  //     isSearch.current = true;
+  //   }
+  // }, []);
+
+  // React.useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaParams;
+  //     const sort = list.find((obj) => obj.sortProperty === params.sortBy);
+  //     dispatch(
+  //       setFilters({
+  //         searchValue: params.search,
+  //         categoryId: Number(params.category),
+  //         currentPage: Number(params.currentPage),
+  //         sort: sort || list[0],
+  //       }),
+  //     );
+  //   }
+  //   isMounted.current = true;
+  // }, []);
 
   //если был первый рендер то запрашиваем пиццы
   React.useEffect(() => {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      // fetchPizzas();
+      dispatch(fetchPizzas({} as SearchPizzaParams);
     }
 
     isSearch.current = false;
@@ -124,9 +143,9 @@ const Home: React.FC = () => {
     //   return false;
     // })
     .map((obj:any) => (
-      <Link key={obj.id} to={`/pizza/${obj.id}`}>
+      //<Link key={obj.id} to={`/pizza/${obj.id}`}>
         <PizzaBlock {...obj} />
-      </Link>
+     // </Link>
     ));
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />

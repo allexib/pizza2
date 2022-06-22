@@ -1,6 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
+import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
 
-const initialState = {
+export type CartItem = {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  type: string;
+  size: number;
+  count: number;
+};
+
+interface CartSliceState {
+  totalPrice: number;
+  items: CartItem[];
+}
+
+const initialState: CartSliceState = {
   totalPrice: 0,
   items: [],
 };
@@ -9,7 +26,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     //найти элемент в массиве увеличь его на ++ и в итоге рисуй. если не нашелся то добваляй новый объекст
-    addItem(state, action) {
+    addItem(state, action:PayloadAction<CartItem>) {
       const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
       if (findItem) {
@@ -25,14 +42,14 @@ const cartSlice = createSlice({
       }, 0);
     },
 
-    minusItem(state, action) {
+    minusItem(state, action:PayloadAction<string>) {
       const findItem = state.items.find((obj) => obj.id === action.payload);
       if (findItem) {
         findItem.count--;
       }
     },
 
-    removeItem(state, action) {
+    removeItem(state, action:PayloadAction<string>) {
       //как сделать не равно тут пл другому
       state.items = state.items.filter((obj) => obj.id !== action.payload);
     },
@@ -43,8 +60,8 @@ const cartSlice = createSlice({
   },
 });
 
-export const selectCart = (state) => state.cart;
-export const selectCartItemById = (id) => (state) =>
+export const selectCart = (state: RootState) => state.cart;
+export const selectCartItemById = (id: string) => (state: RootState) =>
   state.cart.items.find((obj) => obj.id === id);
 
 export const { addItem, removeItem, clearItems, minusItem } = cartSlice.actions;
