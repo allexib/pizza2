@@ -1,0 +1,27 @@
+.root :global {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.root :global .selected a {
+  background-color: #fe5f1e;
+  color: #ffffff;
+}
+.root :global a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fe5f1e;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #fe5f1e;
+  border-radius: 30px;
+  cursor: pointer;
+}
+.root :global a:hover {
+  background-color: #fe5f1e;
+  color: #ffffff;
+}
+
+/*# sourceMappingURL=Pagination.module.css.map */

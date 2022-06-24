@@ -5,13 +5,12 @@
   text-align: center;
   margin-bottom: 65px;
 
-  &-wrapper{
-    display: flex;
-    justify-content: center;
-  }
-
   &__image {
     width: 260px;
+  }
+  &-wrapper {
+    display: flex;
+    justify-content: center;
   }
 
   &__title {

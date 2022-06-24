@@ -8,9 +8,9 @@
   width: 300px;
   border-radius: 12px;
   font-size: 16px;
-  &:focus {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-  }
+}
+.input:focus {
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .clearIcon {
@@ -21,7 +21,9 @@
   top: 15px;
   right: 15px;
   cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-  }
 }
+.clearIcon:hover {
+  opacity: 0.8;
+}
+
+/*# sourceMappingURL=Search.module.css.map */
